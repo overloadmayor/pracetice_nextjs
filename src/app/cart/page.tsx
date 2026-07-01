@@ -2,6 +2,7 @@
 
 import { Suspense, useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
 import type { Cart } from '@/app/lib/types';
 
@@ -129,10 +130,12 @@ function CartContent() {
                 className="bg-white rounded-2xl border border-gray-100 p-5 flex gap-4 hover:shadow-md transition-shadow"
               >
                 <Link href={`/products/${item.productId}`} className="shrink-0">
-                  <img
+                  <Image
                     src={item.product.images[0]}
                     alt={item.product.name}
-                    className="w-24 h-24 rounded-xl object-cover hover:opacity-80 transition-opacity"
+                    width={96}
+                    height={96}
+                    className="rounded-xl object-cover hover:opacity-80 transition-opacity"
                   />
                 </Link>
                 <div className="flex-1 min-w-0">

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import ProductCard from '@/app/components/ProductCard';
 import ProductImageGallery from '@/app/components/ProductImageGallery';
 import AddToCartButton from '@/app/components/AddToCartButton';
@@ -209,10 +210,12 @@ export default async function ProductDetailPage({
               {reviews.map((review) => (
                 <div key={review.id} className="p-4 bg-gray-50 rounded-xl">
                   <div className="flex items-start gap-3">
-                    <img
+                    <Image
                       src={review.avatar}
                       alt={review.userName}
-                      className="w-10 h-10 rounded-full object-cover shrink-0"
+                      width={40}
+                      height={40}
+                      className="rounded-full object-cover shrink-0"
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">

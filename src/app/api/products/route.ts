@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { queryProducts, getProductById, getProductsByCategory, getProductsBySubcategory, getFeaturedProducts, getNewProducts, getReviewsByProductId } from '@/app/lib/fake-data';
+import { queryProducts, getProductById, getProductsByCategory, getProductsBySubcategory, getFeaturedProducts, getNewProducts } from '@/app/lib/fake-data';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

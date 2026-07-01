@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 
 export default function ProductImageGallery({
   images,
@@ -13,11 +14,13 @@ export default function ProductImageGallery({
 
   return (
     <div>
-      <div className="aspect-square rounded-2xl overflow-hidden bg-gray-50 border border-gray-100">
-        <img
+      <div className="aspect-square rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 relative">
+        <Image
           src={images[selected]}
           alt={productName}
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
+          sizes="(max-width: 1024px) 100vw, 50vw"
         />
       </div>
       {images.length > 1 && (
@@ -26,13 +29,13 @@ export default function ProductImageGallery({
             <button
               key={index}
               onClick={() => setSelected(index)}
-              className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${
+              className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all relative ${
                 selected === index
                   ? 'border-indigo-500 ring-2 ring-indigo-200'
                   : 'border-gray-200 hover:border-gray-300'
               }`}
             >
-              <img src={img} alt="" className="w-full h-full object-cover" />
+              <Image src={img} alt="" fill className="object-cover" sizes="80px" />
             </button>
           ))}
         </div>

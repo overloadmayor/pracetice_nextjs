@@ -1,12 +1,11 @@
-import { getFeaturedProducts, getNewProducts, getCart, categories, banners } from '@/app/lib/fake-data';
+import { getFeaturedProducts, getNewProducts, categories, banners } from '@/app/lib/fake-data';
 import ProductCard from '@/app/components/ProductCard';
 import Link from 'next/link';
-import { Suspense } from 'react';
+import Image from 'next/image';
 
 export default async function HomePage() {
   const featuredProducts = getFeaturedProducts();
   const newProducts = getNewProducts();
-  const cart = getCart();
 
   return (
     <div className="flex flex-col flex-1">
@@ -78,12 +77,13 @@ export default async function HomePage() {
               href={`/products?category=${cat.slug}`}
               className="group flex flex-col items-center gap-3 p-4 bg-white rounded-2xl border border-gray-100 hover:shadow-lg hover:border-indigo-100 transition-all duration-300"
             >
-              <div className="w-14 h-14 rounded-xl bg-gray-50 group-hover:bg-indigo-50 transition-colors overflow-hidden flex items-center justify-center">
-                <img
+              <div className="w-14 h-14 rounded-xl bg-gray-50 group-hover:bg-indigo-50 transition-colors overflow-hidden flex items-center justify-center relative">
+                <Image
                   src={cat.image}
                   alt={cat.name}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
+                  fill
+                  className="object-cover"
+                  sizes="56px"
                 />
               </div>
               <div className="text-center">
@@ -145,11 +145,12 @@ export default async function HomePage() {
               className="relative rounded-2xl overflow-hidden h-48 group"
             >
               <div className={`absolute inset-0 ${banner.bgColor}`} />
-              <img
+              <Image
                 src={banner.image}
                 alt=""
-                className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-opacity mix-blend-overlay"
-                loading="lazy"
+                fill
+                className="object-cover opacity-30 group-hover:opacity-40 transition-opacity mix-blend-overlay"
+                sizes="(max-width: 1024px) 100vw, 50vw"
               />
               <div className="relative z-10 p-8 flex flex-col justify-center h-full">
                 <h3 className="text-2xl font-bold text-white mb-2">{banner.title}</h3>

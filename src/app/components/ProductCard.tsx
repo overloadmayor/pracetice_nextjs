@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Product } from '@/app/lib/types';
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -13,11 +14,12 @@ export default function ProductCard({ product }: { product: Product }) {
     >
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-gray-50">
-        <img
+        <Image
           src={product.images[0]}
           alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          loading="lazy"
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         />
         {/* Tags */}
         <div className="absolute top-3 left-3 flex flex-col gap-1">

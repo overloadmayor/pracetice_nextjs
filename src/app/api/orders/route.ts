@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { sampleOrders, addToCart } from '@/app/lib/fake-data';
+import { sampleOrders } from '@/app/lib/fake-data';
 
 export async function GET() {
   return NextResponse.json({ orders: sampleOrders });
