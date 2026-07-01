@@ -1,65 +1,192 @@
-import Image from "next/image";
+import { getFeaturedProducts, getNewProducts, getCart, categories, banners } from '@/app/lib/fake-data';
+import ProductCard from '@/app/components/ProductCard';
+import Link from 'next/link';
+import { Suspense } from 'react';
 
-export default function Home() {
+export default async function HomePage() {
+  const featuredProducts = getFeaturedProducts();
+  const newProducts = getNewProducts();
+  const cart = getCart();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="flex flex-col flex-1">
+      {/* Hero Banner Carousel */}
+      <section className="bg-gradient-to-b from-indigo-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 py-8 lg:py-12">
+          <div className="relative rounded-3xl overflow-hidden">
+            <div className="relative h-[320px] sm:h-[400px] bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 flex items-center">
+              <div className="absolute inset-0 bg-black/10" />
+              <div className="relative z-10 px-8 lg:px-16 max-w-xl">
+                <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-medium rounded-full mb-4">
+                  2026 年中大促
+                </span>
+                <h1 className="text-3xl lg:text-5xl font-bold text-white leading-tight mb-3">
+                  品质生活 <br />从这里开始
+                </h1>
+                <p className="text-white/80 text-lg mb-6">
+                  全场低至5折 · 领券再减100 · 满299包邮
+                </p>
+                <div className="flex gap-3">
+                  <Link
+                    href="/products"
+                    className="inline-flex items-center px-6 py-3 bg-white text-indigo-600 font-semibold rounded-xl hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl"
+                  >
+                    立即抢购
+                    <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                  <Link
+                    href="/products?new=true"
+                    className="inline-flex items-center px-6 py-3 border-2 border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 transition-all"
+                  >
+                    新品首发
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-3 bg-white border border-t-0 border-gray-100 rounded-b-3xl">
+              {[
+                { label: '商品种类', value: '6大类' },
+                { label: '精选好物', value: '28+ 款' },
+                { label: '好评率', value: '98.5%' },
+              ].map((stat) => (
+                <div key={stat.label} className="text-center py-4 border-r border-gray-50 last:border-r-0">
+                  <div className="text-xl font-bold text-gray-900">{stat.value}</div>
+                  <div className="text-xs text-gray-400 mt-1">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Category Navigation */}
+      <section className="max-w-7xl mx-auto px-4 py-8">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-gray-900">商品分类</h2>
+          <Link href="/products" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
+            查看全部 →
+          </Link>
         </div>
-      </main>
+        <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          {categories.map((cat) => (
+            <Link
+              key={cat.id}
+              href={`/products?category=${cat.slug}`}
+              className="group flex flex-col items-center gap-3 p-4 bg-white rounded-2xl border border-gray-100 hover:shadow-lg hover:border-indigo-100 transition-all duration-300"
+            >
+              <div className="w-14 h-14 rounded-xl bg-gray-50 group-hover:bg-indigo-50 transition-colors overflow-hidden flex items-center justify-center">
+                <img
+                  src={cat.image}
+                  alt={cat.name}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <div className="text-center">
+                <div className="text-sm font-medium text-gray-900 group-hover:text-indigo-600 transition-colors">
+                  {cat.name}
+                </div>
+                <div className="text-xs text-gray-400 mt-0.5">{cat.subcategories.length}个子类</div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Featured Products */}
+      <section className="bg-gray-50 py-10">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-xl font-bold text-gray-900">🔥 精选推荐</h2>
+              <p className="text-sm text-gray-400 mt-1">我们为你精心挑选的好物</p>
+            </div>
+            <Link href="/products?featured=true" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
+              更多推荐 →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {featuredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* New Arrivals */}
+      <section className="max-w-7xl mx-auto px-4 py-10">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-xl font-bold text-gray-900">✨ 新品上架</h2>
+            <p className="text-sm text-gray-400 mt-1">最新到货，抢先体验</p>
+          </div>
+          <Link href="/products?new=true" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
+            更多新品 →
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {newProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      </section>
+
+      {/* Promo Banners */}
+      <section className="max-w-7xl mx-auto px-4 pb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          {banners.slice(0, 2).map((banner) => (
+            <Link
+              key={banner.id}
+              href={banner.link}
+              className="relative rounded-2xl overflow-hidden h-48 group"
+            >
+              <div className={`absolute inset-0 ${banner.bgColor}`} />
+              <img
+                src={banner.image}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-opacity mix-blend-overlay"
+                loading="lazy"
+              />
+              <div className="relative z-10 p-8 flex flex-col justify-center h-full">
+                <h3 className="text-2xl font-bold text-white mb-2">{banner.title}</h3>
+                <p className="text-white/80">{banner.subtitle}</p>
+                <span className="mt-3 inline-flex items-center text-white text-sm font-medium">
+                  去看看
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="border-t border-gray-100 bg-white py-10">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: '🚚', title: '满299包邮', desc: '全国范围顺丰包邮' },
+              { icon: '🔄', title: '7天无理由', desc: '不满意随时退换' },
+              { icon: '🛡️', title: '正品保障', desc: '100%正品承诺' },
+              { icon: '💬', title: '在线客服', desc: '每天9:00-21:00' },
+            ].map((feature) => (
+              <div key={feature.title} className="flex items-start gap-4 p-4">
+                <span className="text-2xl shrink-0">{feature.icon}</span>
+                <div>
+                  <div className="text-sm font-semibold text-gray-900">{feature.title}</div>
+                  <div className="text-xs text-gray-400 mt-0.5">{feature.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
