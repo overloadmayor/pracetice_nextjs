@@ -1,22 +1,15 @@
 'use client';
 
-import { Suspense, useState, useEffect, useCallback } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
-import type { Cart, CartItem } from '@/app/lib/types';
+import type { Cart } from '@/app/lib/types';
 
 function CartContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [cart, setCart] = useState<Cart>({ items: [], totalAmount: 0, totalItems: 0 });
   const [loading, setLoading] = useState(true);
-
-  const fetchCart = useCallback(async () => {
-    const res = await fetch('/api/cart');
-    const data = await res.json();
-    setCart(data);
-    setLoading(false);
-  }, []);
 
   // Handle ?add=productId param
   useEffect(() => {
@@ -28,12 +21,22 @@ function CartContent() {
         body: JSON.stringify({ action: 'add', productId: addId, quantity: 1 }),
       }).then(() => {
         router.replace('/cart');
-        fetchCart();
+        fetch('/api/cart')
+          .then((res) => res.json())
+          .then((data) => {
+            setCart(data);
+            setLoading(false);
+          });
       });
     } else {
-      fetchCart();
+      fetch('/api/cart')
+        .then((res) => res.json())
+        .then((data) => {
+          setCart(data);
+          setLoading(false);
+        });
     }
-  }, [searchParams, router, fetchCart]);
+  }, [searchParams, router]);
 
   const handleUpdateQuantity = async (productId: string, quantity: number) => {
     const res = await fetch('/api/cart', {

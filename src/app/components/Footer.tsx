@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import type { Cart } from '@/app/lib/types';
 
 export default function Footer() {
   return (

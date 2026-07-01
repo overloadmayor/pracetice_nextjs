@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ProductCard from './ProductCard';
 import type { Product, ProductsResponse } from '@/app/lib/types';
@@ -20,8 +20,8 @@ export default function ProductGrid() {
   const search = searchParams.get('search') || '';
   const sortBy = searchParams.get('sortBy') || 'newest';
 
-  const fetchProducts = useCallback(async () => {
-    setLoading(true);
+  useEffect(() => {
+    let cancelled = false;
     const params = new URLSearchParams();
     params.set('page', String(page));
     params.set('pageSize', '12');
@@ -30,17 +30,18 @@ export default function ProductGrid() {
     if (search) params.set('search', search);
     if (sortBy) params.set('sortBy', sortBy);
 
-    const res = await fetch(`/api/products?${params.toString()}`);
-    const data: ProductsResponse = await res.json();
-    setProducts(data.products);
-    setTotal(data.total);
-    setTotalPages(data.totalPages);
-    setLoading(false);
+    fetch(`/api/products?${params.toString()}`)
+      .then((res) => res.json())
+      .then((data: ProductsResponse) => {
+        if (!cancelled) {
+          setProducts(data.products);
+          setTotal(data.total);
+          setTotalPages(data.totalPages);
+          setLoading(false);
+        }
+      });
+    return () => { cancelled = true; };
   }, [page, category, subcategory, search, sortBy]);
-
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
 
   const updateParam = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());

@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import Link from 'next/link';
 import ProductGrid from '@/app/components/ProductGrid';
 import { categories } from '@/app/lib/fake-data';
 
@@ -10,29 +11,29 @@ export default function ProductsPage() {
         <div className="sticky top-24 bg-white rounded-2xl border border-gray-100 p-5">
           <h3 className="text-sm font-semibold text-gray-900 mb-4">商品分类</h3>
           <nav className="space-y-0.5">
-            <a
+            <Link
               href="/products"
               className="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
             >
               全部商品
-            </a>
+            </Link>
             {categories.map((cat) => (
               <div key={cat.id} className="group">
-                <a
+                <Link
                   href={`/products?category=${cat.slug}`}
                   className="flex items-center justify-between px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
                 >
                   {cat.name}
-                </a>
+                </Link>
                 <div className="ml-3 space-y-0.5 mt-0.5">
                   {cat.subcategories.map((sub) => (
-                    <a
+                    <Link
                       key={sub.id}
                       href={`/products?subcategory=${sub.slug}`}
                       className="block px-3 py-2 text-xs text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
                     >
                       {sub.name}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -50,13 +51,13 @@ export default function ProductsPage() {
                 { label: '¥1000 - ¥5000', href: '/products?minPrice=1000&maxPrice=5000' },
                 { label: '¥5000 以上', href: '/products?minPrice=5000' },
               ].map((range) => (
-                <a
+                <Link
                   key={range.label}
                   href={range.href}
                   className="block px-3 py-1.5 text-xs text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
                 >
                   {range.label}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
